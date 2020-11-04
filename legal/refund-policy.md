@@ -5,13 +5,19 @@ no_toc: true
 ---
 
 ## Upgrades, Downgrades, Plan Changes
-- All monthly plan changes are automatically pro-rated and are taken into account in the next billing period.
+- All plan changes are automatically pro-rated and adjusted:
+
+  - Plan upgrades are pro-rated and billed within 24 hours of the plan being changed
+
     - **Upgrade example:**
-You're on the 5-job plan. In the middle of your billing period, you upgrade to the 10-job plan. We will charge the rest of the month on the 10-job plan rate. We will also credit you the unused time on the 5-job plan.
+You're on the 5-job plan. In the middle of your billing period, you upgrade to the 10-job plan. We will charge the rest of the month on the 10-job plan rate. We will also credit you the unused time on the 5-job plan, generating a dedicated invoice for the upgrade during the billing period.
+
+  - Plan downgrades are pro-rated and adjusted automatically in the next invoice
+
     - **Downgrade example:**
 You’re on the 10-job plan. In the middle of your billing period, you downgrade to the 5-job plan. We will charge the rest of the month on the 5-job plan rate. We will also credit you the unused time on the 10-job plan.
-- Annual plan upgrades are pro-rated and billed within 24 hours of the plan being changed
-- Annual plan downgrades are pro-rated and adjusted automatically in the next invoice
+
+
 
 ## Billing Schedule
 For monthly or yearly payment plans, the Service is billed in advance on a monthly or yearly basis respectively.
@@ -44,4 +50,4 @@ Once the fiscal year is closed, we are not legally allowed to issue refunds from
 
 ### How to request a refund
 Contact our support team at [support@travis-ci.com](mailto:support@travis-ci.com?subject=Refund%20policy)
-Specify the GitHub handle of the account for which you’re requesting a refund, and send us a copy of your payment and/or invoice.
+Specify the GitHub/Bitbucket/GitLab/Assembla handle of the account for which you’re requesting a refund, and send us a copy of your payment and/or invoice.

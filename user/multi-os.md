@@ -58,7 +58,7 @@ To ignore the results of jobs on one operating system, add the following
 to your `.travis.yml`:
 
 ```yaml
-matrix:
+jobs:
   allow_failures:
     - os: osx
 ```
@@ -85,8 +85,8 @@ addons:
       - graphviz
 
 before_install:
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update          ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install graphviz; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew update          ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install graphviz; fi
 
 script:
   - cd src
@@ -97,7 +97,7 @@ script:
 There are many options available and using the `matrix.include` key is essential to include any specific entries. For example, this matrix would route builds to the [Trusty build environment](/user/reference/trusty/) and to a [macOS image using Xcode 7.2](/user/languages/objective-c#supported-xcode-versions):
 
 ```yaml
-matrix:
+jobs:
   include:
     - os: linux
       dist: trusty
@@ -113,20 +113,20 @@ For example, this `.travis.yml` uses the `matrix.include` key to include four sp
 ```yaml
 language: python
 
-matrix:
-    include:
-        - os: linux
-          python: 3.2
-          env: TOXENV=py32
-        - os: linux
-          python: 3.3
-          env: TOXENV=py33
-        - os: osx
-          language: generic
-          env: TOXENV=py32
-        - os: osx
-          language: generic
-          env: TOXENV=py33
+jobs:
+  include:
+    - os: linux
+      python: 3.2
+      env: TOXENV=py32
+    - os: linux
+      python: 3.3
+      env: TOXENV=py33
+    - os: osx
+      language: generic
+      env: TOXENV=py32
+    - os: osx
+      language: generic
+      env: TOXENV=py33
 install:
     - ./.travis/install.sh
 script: make test
@@ -138,7 +138,7 @@ This custom install script (pseudo code only) uses the `$TRAVIS_OS_NAME` and `$T
 ```bash
 #!/bin/bash
 
-if [[ $TRAVIS_OS_NAME == 'osx' ]]; then
+if [ $TRAVIS_OS_NAME = 'osx' ]; then
 
     # Install some custom requirements on macOS
     # e.g. brew install pyenv-virtualenv

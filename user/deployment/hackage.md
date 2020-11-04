@@ -1,6 +1,7 @@
 ---
 title: Hackage Deployment
 layout: en
+deploy: v1
 
 ---
 
@@ -43,6 +44,6 @@ For example, if you build your project with [different GHC versions](/user/langu
 ```yaml
 deploy:
   on:
-    condition:
-      - $TRAVIS_HASKELL_VERSION = 8.2.2
+    condition: $TRAVIS_HASKELL_VERSION = 8.2.2
 ```
+{: data-file=".travis.yml"}

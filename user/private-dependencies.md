@@ -1,11 +1,10 @@
 ---
-title: Private Dependencies
+title: Private Dependencies GitHub
 layout: en
 
 ---
 
-*Some of the features described here are currently **only available for private
-*repositories on [travis-ci.com](https://travis-ci.com)**.*
+*Some of the features described here are currently **only available for private repositories on [travis-ci.com](https://travis-ci.com)**.*
 
 When testing a private repository, you might need to pull in other private
 repositories as dependencies via [git
@@ -54,7 +53,7 @@ This way, a single key can access multiple repositories. To limit the list of re
 
 ### Using an existing key
 
-[ ![Adding an SSH key via the web interface.](/images/settings-ssh-key.png) ](/images/settings-ssh-key.png){:.small}{:.right}
+[ ![Adding an SSH key via the web interface.](/images/2019-07-settings-ssh-key.png) ](/images/2019-07-settings-ssh-key.png){:.small}{:.right}
 
 Assumptions:
 
@@ -217,15 +216,15 @@ gem 'lib2', github: "myorg/lib2"
 > update --init recursive` command runs before the `~/.netrc` credentials
 > are updated. If you are writing credentials to `~/.netrc`, disable the automatic loading of
 > submodules, update the credentials and add an explicit step to update the submodules:
-
+>
 > ```yaml
 > git:
->   submodules:
->     false
+>   submodules: false
 > before_install:
 >   - echo -e "machine github.com\n  login ci-user\n  password $CI_USER_PASSWORD" >~/.netrc
 >   - git submodule update --init --recursive
 > ```
+> {: data-file=".travis.yml"}
 
 ## API Token
 
@@ -280,18 +279,20 @@ gem 'lib2', github: "myorg/lib2"
 ```
 
 > In case of private git submodules, be aware that the `git submodule
-> update --init recursive` command runs before the `~/.netrc` credentials
+> update --init --recursive` command runs before the `~/.netrc` credentials
 > are updated. If you are writing credentials to `~/.netrc`, disable the automatic loading of
 > submodules, update the credentials and add an explicit step to update the submodules:
 >
 > ```yaml
 > git:
->   submodules:
->     false
+>   submodules: false
 > before_install:
 >   - echo -e "\n\nmachine github.com\n  $CI_TOKEN\n" >~/.netrc
 >   - git submodule update --init --recursive
 > ```
+> {: data-file=".travis.yml"}
+
+> The `.netrc` file is deleted for security reasons right after having cloned the repository of which the build and its submodules are executed!
 
 ## Dedicated User Account
 

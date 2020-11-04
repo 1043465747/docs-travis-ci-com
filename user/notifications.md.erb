@@ -30,6 +30,24 @@ notification](#missing-build-notifications).
 If you add another notification channel, e.g. HipChat or Slack, the
 default is to send a notification on every build.
 
+## Conditional notifications
+
+You can filter out and reject notifications by specifying a condition in your build configuration (your `.travis.yml` file) using `if`.
+
+For example, this will send [Slack notifications](#configuring-slack-notifications) only on builds on the `master` branch:
+
+```yaml
+# require the branch name to be master (note for PRs this is the base branch name)
+notifications:
+  slack:
+    if: branch = master
+```
+{: data-file=".travis.yml"}
+
+See [Conditions](/user/conditions-v1) for details on specifying conditions.
+
+You can find more information on the build config format for [email notifications](https://config.travis-ci.com/ref/notifications/email) in our [Travis CI Build Config Reference](https://config.travis-ci.com/).
+
 ## Changing notification frequency
 
 You can change the conditions for any notification channels by setting the
@@ -61,16 +79,14 @@ the payload will contain all relevant data to do so at the receiving end (see
 When posting notifications over SSL/TLS, be mindful of what ciphers are accepted
 by the receiving server. Notifications will fail if none of the server's ciphers work.
 
-Currently, the following ciphers (as defined by the [openssl gem](http://ruby-doc.org/stdlib-2.1.6/libdoc/openssl/rdoc/OpenSSL.html))
+Currently, the following ciphers (as defined by the [openssl gem](http://ruby-doc.org/stdlib-<%= RUBY_VERSION %>/libdoc/openssl/rdoc/OpenSSL.html))
 are known to work:
 
 ```
-AES-128-CBC AES-128-CBC-HMAC-SHA1 AES-128-CFB AES-128-CFB1 AES-128-CFB8 AES-128-CTR AES-128-ECB AES-128-OFB AES-128-XTS AES-192-CBC AES-192-CFB AES-192-CFB1 AES-192-CFB8 AES-192-CTR AES-192-ECB AES-192-OFB AES-256-CBC AES-256-CBC-HMAC-SHA1 AES-256-CFB AES-256-CFB1 AES-256-CFB8 AES-256-CTR AES-256-ECB AES-256-OFB AES-256-XTS AES128 AES192 AES256 BF BF-CBC BF-CFB BF-ECB BF-OFB CAMELLIA-128-CBC CAMELLIA-128-CFB CAMELLIA-128-CFB1 CAMELLIA-128-CFB8 CAMELLIA-128-ECB CAMELLIA-128-OFB CAMELLIA-192-CBC CAMELLIA-192-CFB CAMELLIA-192-CFB1 CAMELLIA-192-CFB8 CAMELLIA-192-ECB CAMELLIA-192-OFB CAMELLIA-256-CBC CAMELLIA-256-CFB CAMELLIA-256-CFB1 CAMELLIA-256-CFB8 CAMELLIA-256-ECB CAMELLIA-256-OFB CAMELLIA128 CAMELLIA192 CAMELLIA256 CAST CAST-cbc CAST5-CBC CAST5-CFB CAST5-ECB CAST5-OFB DES DES-CBC DES-CFB DES-CFB1 DES-CFB8 DES-ECB DES-EDE DES-EDE-CBC DES-EDE-CFB DES-EDE-OFB DES-EDE3 DES-EDE3-CBC DES-EDE3-CFB DES-EDE3-CFB1 DES-EDE3-CFB8 DES-EDE3-OFB DES-OFB DES3 DESX DESX-CBC RC2 RC2-40-CBC RC2-64-CBC RC2-CBC RC2-CFB RC2-ECB RC2-OFB RC4 RC4-40 RC4-HMAC-MD5 SEED SEED-CBC SEED-CFB SEED-ECB SEED-OFB
+<%= @ciphers_list %>
 ```
 
-Also, consult [cipher suite names mapping](https://www.openssl.org/docs/manmaster/man1/ciphers.html).
-
-If none of the ciphers listed above works, please open a [GitHub issue](https://github.com/travis-ci/travis-ci/issues).
+Also, consult [cipher suite names mapping](https://www.openssl.org/docs/manmaster/man1/openssl.html).
 
 ### Note on IP addresses
 
@@ -210,7 +226,7 @@ notifications:
       - "chat.freenode.net#my-channel"
       - "chat.freenode.net#some-other-channel"
     template:
-      - "%{repository_slug} (%{commit}) : %{message} %{foo} "
+      - "%{repository_slug} (%{commit}) : %{message}"
       - "Build details: %{build_url}"
 ```
 {: data-file=".travis.yml"}
@@ -328,7 +344,7 @@ Notifications can also be sent to Campfire chat rooms, using the following forma
 
 ```yaml
 notifications:
-  campfire: [subdomain]:[api token]@[room id]
+  campfire: "[subdomain]:[api token]@[room id]"
 ```
 {: data-file=".travis.yml"}
 
@@ -349,9 +365,9 @@ You can also customise the notifications, like with [IRC notifications](#configu
 notifications:
   campfire:
     rooms:
-      - [subdomain]:[api token]@[room id]
+      - "[subdomain]:[api token]@[room id]"
     template:
-      - "%{repository_slug} (%{commit}) : %{message} %{foo} "
+      - "%{repository_slug} (%{commit}) : %{message}"
       - "Build details: %{build_url}"
 ```
 {: data-file=".travis.yml"}
@@ -366,7 +382,7 @@ Notifications can be sent to your Flowdock Team Inbox using the following format
 
 ```yaml
 notifications:
-  flowdock: [api token]
+  flowdock: "[api token]"
 ```
 {: data-file=".travis.yml"}
 
@@ -387,7 +403,7 @@ Send notifications to your HipChat rooms using the following key in your
 
 ```yaml
 notifications:
-  hipchat: [api token]@[room id or name]
+  hipchat: "[api token]@[room id or name]"
 ```
 {: data-file=".travis.yml"}
 
@@ -408,7 +424,7 @@ If you are running HipChat Server, specify the hostname like this instead:
 
 ```yaml
 notifications:
-  hipchat: [api token]@[hostname]/[room id or name]
+  hipchat: "[api token]@[hostname]/[room id or name]"
 ```
 {: data-file=".travis.yml"}
 
@@ -418,9 +434,9 @@ HipChat notifications support templates too, so you can customize the appearance
 notifications:
   hipchat:
     rooms:
-      - [api token]@[room id or name]
+      - "[api token]@[room id or name]"
     template:
-      - '%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
+      - "%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
 ```
 {: data-file=".travis.yml"}
 
@@ -431,9 +447,9 @@ If you want to send HTML notifications you need to add `format: html` like this
 notifications:
   hipchat:
     rooms:
-      - [api token]@[room id or name]
+      - "[api token]@[room id or name]"
     template:
-      - '%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
+      - "%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message} (<a href='%{build_url}'>Details</a>/<a href='%{compare_url}'>Change view</a>)"
     format: html
 ```
 {: data-file=".travis.yml"}
@@ -444,9 +460,9 @@ With the V2 API, you can trigger a user notification by setting `notify: true`:
 notifications:
   hipchat:
     rooms:
-      - [api token]@[room id or name]
+      - "[api token]@[room id or name]"
     template:
-      - '%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
+      - "%{repository_slug}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
     notify: true
 ```
 {: data-file=".travis.yml"}
@@ -486,9 +502,9 @@ Notifications can also be sent via [Pushover](https://pushover.net/) via the fol
 ```yaml
 notifications:
   pushover:
-    api_key: [api token]
+    api_key: "[api token]"
     users:
-      - [user key]
+      - "[user key]"
 ```
 {: data-file=".travis.yml"}
 
@@ -509,12 +525,12 @@ You can also customise the notifications, like with IRC notifications:
 
 ```yaml
 notifications:
-pushover:
-  api_key: [api token]
-  users:
-    - [user key]
-    - [user key]
-  template: "%{repository_slug} (%{commit}) : %{message} %{foo} - Build details: %{build_url}"
+  pushover:
+    api_key: "[api token]"
+    users:
+      - "[user key]"
+      - "[user key]"
+    template: "%{repository_slug} (%{commit}) : %{message} - Build details: %{build_url}"
 ```
 {: data-file=".travis.yml"}
 
@@ -617,7 +633,7 @@ Customize the notification message by editing the template, as in this example:
 notifications:
   slack:
     template:
-      - "%{repository_slug} (%{commit}) : %{message} %{foo} "
+      - "%{repository_slug} (%{commit}) : %{message}"
       - "Build details: %{build_url}"
 ```
 {: data-file=".travis.yml"}
@@ -628,7 +644,7 @@ The default template for push builds is:
 notifications:
   slack:
     template:
-      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
+    - "Build <%%{build_url}|#%{build_number}> (<%%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} by %{author} %{result} in %{duration}"
 ```
 {: data-file=".travis.yml"}
 
@@ -638,7 +654,7 @@ while the default template for pull request builds is:
 notifications:
   slack:
     template:
-    - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} in PR <%{pull_request_url}|#%{pull_request_number}> by %{author} %{result} in %{duration}"
+    - "Build <%%{build_url}|#%{build_number}> (<%%{compare_url}|%{commit}>) of %{repository_slug}@%{branch} in PR <%%{pull_request_url}|#%{pull_request_number}> by %{author} %{result} in %{duration}"
 ```
 {: data-file=".travis.yml"}
 
@@ -676,9 +692,9 @@ notifications:
       - http://hooks.mydomain.com/events
     on_success: change # default: always
     on_failure: always # default: always
-    on_start: change   # default: never
-    on_cancel: always # default: always
-    on_error: always # default: always
+    on_start:   change # default: never
+    on_cancel:  always # default: always
+    on_error:   always # default: always
 ```
 {: data-file=".travis.yml"}
 
@@ -688,7 +704,7 @@ Webhooks are delivered with a `application/x-www-form-urlencoded` content type u
 
 Here is the payload sent to [the Travis CI documentation application](https://github.com/travis-ci/docs-travis-ci-com):
 
-<script src="https://gist.github.com/{{ site.env.WEBHOOK_PAYLOAD_GIST_ID }}.js" data-proofer-ignore></script>
+<script src="https://gist.github.com/<%= ENV['WEBHOOK_PAYLOAD_GIST_ID'] %>.js" data-proofer-ignore></script>
 
 You will see one of the following values in the `status`/`result` fields that represent the state of the build.
 
@@ -771,6 +787,30 @@ _notifications:_
 _webhooks: <webhook-url>_
 4. Commit the _.travis.yml_ file to the root of your repository.
 
-## For the truly curious
+## Configuring multiple notification targets with different configurations
 
-Notification webhooks are delivered by [travis-ci/travis-tasks](https://github.com/travis-ci/travis-tasks).
+Each of the notifiers described above can also take an array of hashes as configurations,
+each element being a configuration of that notifier as described above.
+This is useful when you want different notification behaviors based on build results.
+
+For example, you might have separate Slack channels for notifying successful builds and failing builds, using non-default templates:
+
+```yaml
+notifications:
+  slack:
+    - rooms:
+        - <account>:<token>#failures
+      on_success: never
+      on_failure: always
+      template:
+        - "%{repository_slug} (%{commit}) : %{message}"
+        - "Build details: %{build_url}"
+    - rooms:
+        - <account>:<token>#successes
+      on_success: always
+      on_failure: never
+      template:
+        - "%{repository_slug} (%{commit}) : %{message}"
+        - "Build details: %{build_url}"
+```
+{: data-file=".travis.yml"}

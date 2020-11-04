@@ -30,7 +30,7 @@ Note that, in order to choose Go 1.10, you must use `go: "1.10"` (a string), not
 `go: 1.10` (a float).  Using a float results in the use of Go 1.1.
 </aside>
 
-{{ site.data.snippets.trusty_note_no_osx }}
+{{ site.data.snippets.linux_windows_note }}
 
 The rest of this guide covers configuring Go projects in Travis CI. If you're
 new to Travis CI please read our [Tutorial](/user/tutorial/) and [build
@@ -219,6 +219,10 @@ deploy:
     condition: $TRAVIS_GO_VERSION =~ ^1\.7
 ```
 {: data-file=".travis.yml"}
+
+## Build Config Reference
+
+You can find more information on the build config format for [Go](https://config.travis-ci.com/ref/language/go) in our [Travis CI Build Config Reference](https://config.travis-ci.com/).
 
 ## Examples
 

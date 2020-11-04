@@ -24,7 +24,7 @@ language: elixir
 
 </aside>
 
-{{ site.data.snippets.trusty_note_no_osx }}
+{{ site.data.snippets.linux_note }}
 
 The rest of this guide covers build environment and configuration topics
 specific to Elixir projects. Please make sure to read our
@@ -51,12 +51,14 @@ For example,
 ```yaml
 elixir: '1.5.2'
 ```
+{: data-file=".travis.yml"}
 
 or
 
 ```yaml
 elixir: '1.5'
 ```
+{: data-file=".travis.yml"}
 
 The former points to the specific release indicated, while
 the latter points to the latest development branch build which
@@ -94,7 +96,7 @@ elixir:
   - '1.0.5'
 otp_release: '17.4'
 
-matrix:
+jobs:
   include:
     - elixir: '1.2'
       otp_release: '18.0'
@@ -114,3 +116,7 @@ As with the Erlang VM, the version of OTP release a job is using is available as
 ```
 TRAVIS_OTP_RELEASE
 ```
+
+## Build Config Reference
+
+You can find more information on the build config format for [Elixir](https://config.travis-ci.com/ref/language/elixir) in our [Travis CI Build Config Reference](https://config.travis-ci.com/).

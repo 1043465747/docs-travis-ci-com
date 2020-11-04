@@ -58,11 +58,15 @@ Virtual Framebuffer) to imitate a display. If you need a browser, you can use
 Firefox (either with the pre-installed version, or the [addon](/user/firefox))
 or Google Chrome (with the [addon](/user/chrome), on Linux Trusty or macOS).
 
-### Using services: xvfb
+### Using `services:`
+
+> This only works on Ubuntu 16.04 (Xenial) and later on releases i.e. with `dist: xenial` or `dist: bionic`
+
 The following will start xvfb and set the right values for the `DISPLAY`
 environment variable:
 
 ```yaml
+dist: xenial
 services:
   - xvfb
 ```
@@ -86,6 +90,8 @@ script: xvfb-run --server-args="-screen 0 1024x768x24" make test
 {: data-file=".travis.yml"}
 
 ### Using xvfb directly
+
+> This is recommended on Ubuntu 14.04 (Trusty) i.e. with `dist: trusty`. For `dist: xenial`, use the `services` keyword described [above](/user/gui-and-headless-browsers/#using-services).
 
 To use `xvfb` itself, start it in the `before_script` section of your
 `.travis.yml`:
@@ -142,7 +148,7 @@ Note that <code>sudo</code> is not available for builds that are running on the 
 </div>
 
 
-### Using the [Chrome addon](/user/chrome) in the headless mode
+## Using the [Chrome addon](/user/chrome) in the headless mode
 
 Starting with version 57 for Linux Trusty and version 59 on macOS, Google Chrome can be used in "headless"
 mode, which is suitable for driving browser-based tests using Selenium and other tools.
@@ -152,7 +158,7 @@ mode, which is suitable for driving browser-based tests using Selenium and other
 For example, on Linux
 
 ```yaml
-dist: trusty
+dist: xenial
 addons:
   chrome: stable
 before_install:
@@ -180,7 +186,7 @@ before_install:
 * [Headless Chromium documentation](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)
 * [Getting Started with Headless Chrome](https://developers.google.com/web/updates/2017/04/headless-chrome)
 
-### Using the [Firefox addon](/user/firefox) in headless mode
+## Using the [Firefox addon](/user/firefox) in headless mode
 
 Starting with version 56, Firefox can be used in "headless" mode, which is
 suitable for driving browser-based tests using Selenium and other tools.
@@ -189,7 +195,8 @@ Headless mode can be enabled using the `MOZ_HEADLESS`
 
 ```yaml
 env:
-  - MOZ_HEADLESS=1
+  global:
+    - MOZ_HEADLESS=1
 addons:
   firefox: latest
 ```
